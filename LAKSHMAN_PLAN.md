@@ -87,12 +87,12 @@ A panic/stress relief tool built around guided breathing cycles.
 |-------|------|--------|------------|-------------|
 | 1 | Foundation & Data Layer | ✅ Done | 8 | 8 |
 | 2 | Matching Engine & Logic | ✅ Done | 6 | 6 |
-| 3 | Symptom Checker UI | ⬜ Not Started | 0 | 7 |
+| 3 | Symptom Checker UI | ✅ Done | 7 | 7 |
 | 4 | First Aid Module | ⬜ Not Started | 0 | 6 |
 | 5 | Breathing Module & Nav | ⬜ Not Started | 0 | 5 |
 | 6 | Polish, PWA & Deploy | ⬜ Not Started | 0 | 7 |
 
-**Total:** 14 / 39 tasks complete · 36% done
+**Total:** 21 / 39 tasks complete · 54% done
 
 > **How to update:** Change `⬜ Not Started` → `🔄 In Progress` → `✅ Done`. Update the numbers in Tasks Done column. Recalculate the total at the bottom.
 
@@ -204,23 +204,23 @@ export function runMatcher(input) {
 
 **Goal:** The symptom checker page is fully functional — input, results, and emergency modal all working end-to-end.
 **Estimated time:** 60–75 min
-**Status:** ⬜ Not Started
-**Progress:** 0 / 7 tasks
+**Status:** ✅ Done
+**Progress:** 7 / 7 tasks
 
 ### Stats
-- Tasks complete: **0 / 7**
-- Blockers: Phase 2 must be complete
-- Notes: Refer to `ui.md` for exact layout, color, and component specs
+- Tasks complete: **7 / 7**
+- Blockers: none
+- Notes: Symptom input, result cards, emergency modal, check/clear actions, and matcher integration completed per `ui.md`.
 
 ### Tasks
 
-- [ ] **3.1** Build `SymptomInput.jsx` — searchable text input, renders filtered suggestion list, adds symptom as a removable tag on select
-- [ ] **3.2** Build `ResultCard.jsx` — illness name, confidence bar, severity badge (color-coded), precautions list, conditional "See a Doctor" nudge
-- [ ] **3.3** Build `EmergencyModal.jsx` — full-screen red overlay, bold emergency headline, immediate action steps list, "CALL 108" CTA button, dismiss button
-- [ ] **3.4** Build `Home.jsx` — wire SymptomInput → runMatcher → conditional render (EmergencyModal or ResultCard list)
-- [ ] **3.5** Add "Check Symptoms" button — disabled until at least 1 symptom selected
-- [ ] **3.6** Add "Clear All" reset functionality
-- [ ] **3.7** Commit: `feat: symptom checker UI complete`
+- [x] **3.1** Build `SymptomInput.jsx` — searchable text input, renders filtered suggestion list, adds symptom as a removable tag on select
+- [x] **3.2** Build `ResultCard.jsx` — illness name, confidence bar, severity badge (color-coded), precautions list, conditional "See a Doctor" nudge
+- [x] **3.3** Build `EmergencyModal.jsx` — full-screen red overlay, bold emergency headline, immediate action steps list, "CALL 108" CTA button, dismiss button
+- [x] **3.4** Build `Home.jsx` — wire SymptomInput → runMatcher → conditional render (EmergencyModal or ResultCard list)
+- [x] **3.5** Add "Check Symptoms" button — disabled until at least 1 symptom selected
+- [x] **3.6** Add "Clear All" reset functionality
+- [x] **3.7** Commit: `feat: symptom checker UI complete`
 
 ### Component Notes
 - `SymptomInput`: filter `symptoms.json` against current input string, exclude already-added symptoms from suggestions

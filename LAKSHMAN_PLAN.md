@@ -361,7 +361,7 @@ Track every commit here for quick reference.
 | # | Hash (short) | Message | Phase |
 |---|-------------|---------|-------|
 | 1 | `56ee396` | `init: scaffold + tailwind + data layer` | 1 |
-| 2 | — | `feat: symptom matching engine` | 2 |
+| 2 | `5ac3ef9` | `feat: symptom matching engine` | 2 |
 | 3 | — | `feat: symptom checker UI complete` | 3 |
 | 4 | — | `feat: first aid module complete` | 4 |
 | 5 | — | `feat: breathing module + navigation complete` | 5 |

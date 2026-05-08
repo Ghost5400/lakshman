@@ -366,7 +366,7 @@ Track every commit here for quick reference.
 | 3 | `191c078` | `feat: complete phase 3 symptom checker UI` | 3 |
 | 4 | `715eb39` | `feat: first aid module complete` | 4 |
 | 5 | `7018622` | `feat: breathing module + navigation complete` | 5 |
-| 6 | — | `deploy: production build v1.0` | 6 |
+| 6 | `0ea4066` | `deploy: production build v1.0` | 6 |
 
 > Fill in the short hash after each commit using `git log --oneline -1`
 

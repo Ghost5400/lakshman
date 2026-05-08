@@ -6,6 +6,34 @@ function toLabel(symptom) {
 }
 
 const severityMap = {
+  mild: {
+    badgeClass: 'bg-surface-container-low',
+    textClass: 'text-primary',
+    icon: 'check_circle',
+    label: 'Mild',
+    barClass: 'bg-primary',
+  },
+  moderate: {
+    badgeClass: 'bg-secondary-container',
+    textClass: 'text-secondary',
+    icon: 'info',
+    label: 'Moderate',
+    barClass: 'bg-secondary',
+  },
+  serious: {
+    badgeClass: 'bg-error-container',
+    textClass: 'text-error',
+    icon: 'warning',
+    label: 'Serious',
+    barClass: 'bg-error opacity-80',
+  },
+  emergency: {
+    badgeClass: 'bg-error-container',
+    textClass: 'text-error',
+    icon: 'emergency',
+    label: 'Emergency',
+    barClass: 'bg-error',
+  },
   low: {
     badgeClass: 'bg-surface-container-low',
     textClass: 'text-primary',
@@ -30,8 +58,9 @@ const severityMap = {
 }
 
 function ResultCard({ result, isTopResult }) {
-  const severity = severityMap[result.severity] ?? severityMap.medium
-  const showDoctorNudge = result.severity === 'high' || result.seekHelp
+  const effectiveSeverity = result.globalSeverity ?? result.severity
+  const severity = severityMap[effectiveSeverity] ?? severityMap.moderate
+  const showDoctorNudge = ['high', 'serious', 'emergency'].includes(effectiveSeverity) || result.seekHelp
 
   return (
     <article
@@ -82,6 +111,15 @@ function ResultCard({ result, isTopResult }) {
           />
         </div>
       </div>
+
+      {result.evidence && (
+        <div className="rounded-lg border border-outline-variant bg-surface-container-low p-sm">
+          <p className="text-small font-small text-on-surface">
+            <span className="text-on-surface-variant">Evidence strength:</span> {result.evidence.strength}
+          </p>
+          <p className="text-small font-small text-on-surface-variant mt-xs">{result.evidence.reason}</p>
+        </div>
+      )}
 
       {Array.isArray(result.precautions) && result.precautions.length > 0 && (
         <div className="flex flex-col gap-sm">

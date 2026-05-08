@@ -1,23 +1,175 @@
-import { useMemo, useState } from 'react'
-import EmergencyModal from '../components/symptom/EmergencyModal'
+import { useEffect, useMemo, useState } from 'react'
 import ResultCard from '../components/symptom/ResultCard'
 import SymptomInput from '../components/symptom/SymptomInput'
 import { runMatcher } from '../engine/matcher'
 
-const QUICK_SYMPTOMS = ['fever', 'cough', 'headache']
+const STEP = {
+  INTRO: 0,
+  SYMPTOMS: 1,
+  REGION: 2,
+  QUESTIONS: 3,
+  SEVERITY: 4,
+  ANALYSIS: 5,
+  RESULTS: 6,
+  RECOVERY: 7,
+  EMERGENCY: 8,
+}
 
-function toLabel(symptom) {
-  return symptom
+const BODY_REGIONS = [
+  { id: 'head', label: 'Head', icon: 'face' },
+  { id: 'throat', label: 'Throat', icon: 'record_voice_over' },
+  { id: 'chest', label: 'Chest', icon: 'cardiology' },
+  { id: 'abdomen', label: 'Abdomen', icon: 'pill' },
+  { id: 'arms', label: 'Arms', icon: 'accessibility_new' },
+  { id: 'legs', label: 'Legs', icon: 'directions_walk' },
+  { id: 'skin', label: 'Skin', icon: 'dermatology' },
+]
+
+const REGION_SYMPTOM_HINTS = {
+  head: ['headache', 'dizziness', 'blurred-vision', 'loss-of-smell', 'loss-of-taste'],
+  throat: ['sore-throat', 'cough', 'runny-nose', 'sneezing', 'nasal-congestion'],
+  chest: ['chest-pain', 'chest-tightness', 'shortness-of-breath', 'breathing-difficulty', 'wheezing'],
+  abdomen: ['abdominal-pain', 'nausea', 'vomiting', 'diarrhea', 'dehydration'],
+  arms: ['joint-pain', 'swelling', 'body-ache'],
+  legs: ['joint-pain', 'swelling', 'fatigue'],
+  skin: ['skin-rash', 'itching', 'red-skin-patch'],
+}
+
+function toLabel(value) {
+  return String(value)
     .split('-')
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ')
 }
 
+function buildQuestions(selectedSymptoms = [], region = '') {
+  const includes = (symptom) => selectedSymptoms.includes(symptom)
+  const questions = [
+    {
+      id: 'durationDays',
+      prompt: 'How long have these symptoms been present?',
+      options: [
+        { label: 'Less than 24 hours', value: 1 },
+        { label: '1-3 days', value: 3 },
+        { label: '4-7 days', value: 7 },
+        { label: 'More than 1 week', value: 10 },
+      ],
+    },
+    {
+      id: 'suddenOnset',
+      prompt: 'Did the symptoms begin suddenly?',
+      options: [
+        { label: 'Yes', value: true },
+        { label: 'No', value: false },
+      ],
+    },
+  ]
+
+  if (includes('cough')) {
+    questions.push({
+      id: 'coughType',
+      prompt: 'How would you describe the cough?',
+      options: [
+        { label: 'Mostly dry cough', value: 'dry' },
+        { label: 'Wet cough with mucus', value: 'wet' },
+        { label: 'Not sure', value: 'unknown' },
+      ],
+    })
+  }
+
+  if (includes('chest-pain') || includes('shortness-of-breath') || region === 'chest') {
+    questions.push({
+      id: 'breathingDifficultyLevel',
+      prompt: 'How difficult is breathing right now?',
+      options: [
+        { label: 'Mild', value: 3 },
+        { label: 'Moderate', value: 6 },
+        { label: 'Severe', value: 9 },
+      ],
+    })
+  }
+
+  questions.push({
+    id: 'severeWeakness',
+    prompt: 'Are you feeling unusual weakness or unable to do normal activity?',
+    options: [
+      { label: 'Yes', value: true },
+      { label: 'No', value: false },
+    ],
+  })
+
+  questions.push({
+    id: 'faintingEpisode',
+    prompt: 'Any fainting, unconsciousness, or seizure-like episode?',
+    options: [
+      { label: 'Yes', value: true },
+      { label: 'No', value: false },
+    ],
+  })
+
+  return questions
+}
+
 function Home() {
+  const [step, setStep] = useState(STEP.INTRO)
+  const [personType, setPersonType] = useState('')
   const [selectedSymptoms, setSelectedSymptoms] = useState([])
+  const [selectedRegion, setSelectedRegion] = useState('')
+  const [answers, setAnswers] = useState({})
+  const [questionIndex, setQuestionIndex] = useState(0)
+  const [painScale, setPainScale] = useState(0)
   const [results, setResults] = useState([])
   const [showEmergency, setShowEmergency] = useState(false)
-  const [hasChecked, setHasChecked] = useState(false)
+  const [globalSeverity, setGlobalSeverity] = useState('mild')
+
+  const clearAll = () => {
+    setStep(STEP.INTRO)
+    setPersonType('')
+    setSelectedSymptoms([])
+    setSelectedRegion('')
+    setAnswers({})
+    setQuestionIndex(0)
+    setPainScale(0)
+    setResults([])
+    setShowEmergency(false)
+    setGlobalSeverity('mild')
+  }
+
+  const questions = useMemo(() => buildQuestions(selectedSymptoms, selectedRegion), [
+    selectedSymptoms,
+    selectedRegion,
+  ])
+  const currentQuestion = questions[questionIndex]
+  const filteredRegionSymptoms = useMemo(() => {
+    if (!selectedRegion) return []
+    const hints = REGION_SYMPTOM_HINTS[selectedRegion] ?? []
+    return selectedSymptoms.filter((symptom) => hints.includes(symptom))
+  }, [selectedRegion, selectedSymptoms])
+
+  const currentResults = useMemo(() => results.slice(0, 3), [results])
+
+  const finalizeAssessment = () => {
+    const match = runMatcher(selectedSymptoms, {
+      answers,
+      painScale,
+      selectedRegion,
+      personType,
+    })
+    setResults(match.results)
+    setShowEmergency(match.emergency)
+    setGlobalSeverity(match.globalSeverity ?? 'mild')
+    setStep(match.emergency ? STEP.EMERGENCY : STEP.RESULTS)
+  }
+
+  useEffect(() => {
+    if (step !== STEP.ANALYSIS) return
+
+    const timeout = setTimeout(() => {
+      finalizeAssessment()
+    }, 1500)
+
+    return () => clearTimeout(timeout)
+  }, [step])
 
   const addSymptom = (symptom) => {
     setSelectedSymptoms((current) => (current.includes(symptom) ? current : [...current, symptom]))
@@ -27,144 +179,267 @@ function Home() {
     setSelectedSymptoms((current) => current.filter((item) => item !== symptom))
   }
 
-  const clearAll = () => {
-    setSelectedSymptoms([])
-    setResults([])
-    setHasChecked(false)
-    setShowEmergency(false)
+  const submitAnswer = (value) => {
+    if (!currentQuestion) return
+    setAnswers((current) => ({ ...current, [currentQuestion.id]: value }))
+    if (questionIndex >= questions.length - 1) {
+      setStep(STEP.SEVERITY)
+      return
+    }
+    setQuestionIndex((current) => current + 1)
   }
 
-  const runAssessment = () => {
-    if (selectedSymptoms.length === 0) return
-
-    const match = runMatcher(selectedSymptoms)
-    setHasChecked(true)
-    setResults(match.results)
-    setShowEmergency(match.emergency)
-  }
-
-  const canCheck = selectedSymptoms.length > 0
-  const isEmptyState = selectedSymptoms.length === 0 && !hasChecked
-  const showNoResultsState = hasChecked && !showEmergency && results.length === 0
-  const sortedQuickSymptoms = useMemo(
-    () => QUICK_SYMPTOMS.filter((symptom) => !selectedSymptoms.includes(symptom)),
-    [selectedSymptoms],
-  )
+  const progressPercent = Math.round(((questionIndex + 1) / Math.max(questions.length, 1)) * 100)
 
   return (
-    <>
-      <section className="flex flex-col gap-lg">
-        <SymptomInput
-          selectedSymptoms={selectedSymptoms}
-          onAddSymptom={addSymptom}
-          onRemoveSymptom={removeSymptom}
-        />
+    <section className="flex flex-col gap-lg">
+      {step === STEP.INTRO && (
+        <article className="rounded-xl bg-surface-container-lowest border border-outline-variant shadow-sm p-lg text-center">
+          <div className="w-16 h-16 rounded-full bg-primary/10 text-primary mx-auto flex items-center justify-center mb-md">
+            <span className="material-symbols-outlined text-[30px]">health_and_safety</span>
+          </div>
+          <h2 className="text-h1 font-h1 text-on-surface">Guided Health Assessment</h2>
+          <p className="text-body font-body text-on-surface-variant mt-sm">
+            We will ask a few medical follow-up questions before suggesting possible conditions.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-sm mt-lg">
+            <button
+              type="button"
+              className="rounded-xl border border-outline-variant bg-surface-container-low p-md text-left hover:border-primary transition-colors"
+              onClick={() => {
+                setPersonType('myself')
+                setStep(STEP.SYMPTOMS)
+              }}
+            >
+              <span className="text-h3 font-h3 text-on-surface">Myself</span>
+            </button>
+            <button
+              type="button"
+              className="rounded-xl border border-outline-variant bg-surface-container-low p-md text-left hover:border-primary transition-colors"
+              onClick={() => {
+                setPersonType('someone-else')
+                setStep(STEP.SYMPTOMS)
+              }}
+            >
+              <span className="text-h3 font-h3 text-on-surface">Someone Else</span>
+            </button>
+          </div>
+        </article>
+      )}
 
-        <div className="flex items-center justify-end">
+      {step === STEP.SYMPTOMS && (
+        <>
+          <SymptomInput
+            selectedSymptoms={selectedSymptoms}
+            onAddSymptom={addSymptom}
+            onRemoveSymptom={removeSymptom}
+          />
           <button
             type="button"
-            className="text-small font-small text-primary underline underline-offset-4 disabled:text-on-surface-variant disabled:no-underline"
-            disabled={!canCheck && !hasChecked}
-            onClick={clearAll}
+            className="w-full h-[56px] rounded-full bg-primary text-on-primary text-h3 font-h3 disabled:bg-surface-container disabled:text-on-surface-variant"
+            disabled={selectedSymptoms.length === 0}
+            onClick={() => setStep(STEP.REGION)}
           >
-            Clear All
+            Continue to Body Region
           </button>
-        </div>
+        </>
+      )}
 
-        {isEmptyState && (
-          <div className="flex-grow flex flex-col items-center justify-center text-center px-lg">
-            <div className="w-48 h-48 mb-lg relative flex items-center justify-center opacity-80">
-              <svg
-                className="w-full h-full absolute animate-[pulse_4s_ease-in-out_infinite]"
-                viewBox="0 0 200 200"
-              >
-                <path
-                  d="M44.7,-76.4C58.8,-69.2,71.8,-59.1,81.3,-46.3C90.8,-33.6,96.9,-16.8,95.7,-0.7C94.5,15.4,86,30.7,76.2,44.5C66.4,58.3,55.2,70.7,41.8,78.8C28.3,86.9,14.2,90.8,-0.2,91.2C-14.6,91.6,-29.2,88.5,-43.4,81.2C-57.7,73.8,-71.6,62.1,-79.2,47.5C-86.8,32.9,-88.2,15.5,-86.8,-1.1C-85.3,-17.8,-81,-35.6,-72.2,-50C-63.5,-64.4,-50.4,-75.4,-36.3,-82.1C-22.2,-88.8,-7.1,-91.2,7.8,-88.9C22.8,-86.6,45.5,-83.6,44.7,-76.4Z"
-                  fill="#e4e9e7"
-                  transform="translate(100 100)"
-                />
-              </svg>
-              <svg className="w-40 h-40 absolute" viewBox="0 0 200 200">
-                <path
-                  d="M39.9,-65.7C52.8,-60.5,65.2,-53,74.1,-41.7C83,-30.4,88.4,-15.2,86.6,-1.1C84.8,13,75.8,26.1,67.4,39.8C59,53.5,51.2,67.9,39.8,75.5C28.4,83.1,14.2,83.9,-0.5,84.8C-15.1,85.7,-30.3,86.6,-43.8,80.6C-57.4,74.6,-69.4,61.7,-76.8,47.1C-84.2,32.5,-86.9,16.2,-86.8,0.1C-86.7,-16,-83.7,-32,-76.4,-45.6C-69,-59.2,-57.4,-70.4,-43.7,-75.3C-30.1,-80.3,-15,-79,-0.9,-77.5C13.3,-76.1,27,-70.8,39.9,-65.7Z"
-                  fill="#f0f5f2"
-                  transform="translate(100 100)"
-                />
-              </svg>
-              <div className="relative z-10 bg-surface-container-lowest p-xl rounded-full shadow-sm border border-outline-variant/30 flex items-center justify-center">
-                <span className="material-symbols-outlined text-[48px] text-primary">
-                  health_and_safety
-                </span>
-              </div>
-            </div>
-
-            <p className="text-body font-body text-on-surface-variant italic max-w-xs leading-relaxed">
-              Add your symptoms above to get started
-            </p>
-
-            <div className="mt-lg flex gap-sm flex-wrap justify-center">
-              {sortedQuickSymptoms.map((symptom) => (
+      {step === STEP.REGION && (
+        <>
+          <article className="rounded-xl bg-surface-container-lowest border border-outline-variant p-md">
+            <h3 className="text-h2 font-h2 text-on-surface mb-sm">Select symptom location</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-sm">
+              {BODY_REGIONS.map((region) => (
                 <button
-                  key={symptom}
+                  key={region.id}
                   type="button"
-                  className="bg-surface-container text-on-surface-variant px-md py-xs rounded-full text-small font-small border border-outline-variant/50 hover:bg-surface-container-highest transition-colors"
-                  onClick={() => addSymptom(symptom)}
+                  className={`rounded-xl border p-sm text-left transition-colors ${
+                    selectedRegion === region.id
+                      ? 'bg-primary/10 border-primary text-primary'
+                      : 'bg-surface-container-low border-outline-variant text-on-surface'
+                  }`}
+                  onClick={() => setSelectedRegion(region.id)}
                 >
-                  {toLabel(symptom)}
+                  <span className="material-symbols-outlined text-[20px]">{region.icon}</span>
+                  <p className="text-small font-small mt-xs">{region.label}</p>
                 </button>
               ))}
             </div>
-          </div>
-        )}
-
-        {results.length > 0 && !showEmergency && (
-          <section className="flex flex-col gap-md">
-            <h2 className="text-h1 font-h1 text-on-surface">Analysis Results</h2>
-            {results.map((result, index) => (
-              <ResultCard key={result.id} result={result} isTopResult={index === 0} />
-            ))}
-
-            <div className="pt-sm">
-              <button
-                type="button"
-                className="bg-surface-container text-primary font-h3 text-h3 px-lg py-md rounded-full shadow-sm hover:bg-surface-container-high transition-colors flex items-center gap-sm border border-outline-variant"
-                onClick={clearAll}
-              >
-                <span className="material-symbols-outlined">restart_alt</span>
-                Start New Assessment
-              </button>
+            <div className="mt-md">
+              <p className="text-small font-small text-on-surface-variant">
+                Region related symptoms: {filteredRegionSymptoms.length > 0 ? '' : 'None selected yet'}
+              </p>
+              <div className="flex flex-wrap gap-sm mt-xs">
+                {filteredRegionSymptoms.map((symptom) => (
+                  <span
+                    key={symptom}
+                    className="px-sm py-xs rounded-full text-small font-small bg-primary/10 text-primary"
+                  >
+                    {toLabel(symptom)}
+                  </span>
+                ))}
+              </div>
             </div>
-          </section>
-        )}
-
-        {showNoResultsState && (
-          <section className="rounded-xl border border-outline-variant bg-surface-container-lowest p-md shadow-sm">
-            <h2 className="text-h2 font-h2 text-on-surface">No close match found</h2>
-            <p className="text-body font-body text-on-surface-variant mt-xs">
-              Try adding more symptoms for better confidence.
-            </p>
-          </section>
-        )}
-
-        <section className="mt-auto pt-lg pb-margin sticky bottom-0 md:static bg-gradient-to-t from-background via-background to-transparent md:bg-none z-0">
+          </article>
           <button
             type="button"
-            disabled={!canCheck}
-            className={`w-full h-[56px] text-h3 font-h3 rounded-full flex items-center justify-center gap-sm transition-all ${
-              canCheck
-                ? 'bg-primary text-on-primary shadow-[0px_4px_12px_rgba(0,104,95,0.2)] hover:shadow-[0px_8px_24px_rgba(0,104,95,0.3)] active:scale-[0.98]'
-                : 'bg-surface-container text-on-surface-variant cursor-not-allowed'
-            }`}
-            onClick={runAssessment}
+            className="w-full h-[56px] rounded-full bg-primary text-on-primary text-h3 font-h3 disabled:bg-surface-container disabled:text-on-surface-variant"
+            disabled={!selectedRegion}
+            onClick={() => setStep(STEP.QUESTIONS)}
           >
-            <span>Check Symptoms</span>
-            <span className="material-symbols-outlined">arrow_forward</span>
+            Continue to Questions
           </button>
-        </section>
-      </section>
+        </>
+      )}
 
-      {showEmergency && <EmergencyModal onDismiss={() => setShowEmergency(false)} />}
-    </>
+      {step === STEP.QUESTIONS && currentQuestion && (
+        <article className="rounded-xl bg-surface-container-lowest border border-outline-variant p-md">
+          <div className="w-full bg-surface-dim rounded-full h-2 mb-md">
+            <div className="h-full rounded-full bg-primary" style={{ width: `${progressPercent}%` }} />
+          </div>
+          <h3 className="text-h2 font-h2 text-on-surface">{currentQuestion.prompt}</h3>
+          <p className="text-small font-small text-on-surface-variant mt-xs">
+            Question {questionIndex + 1} of {questions.length}
+          </p>
+          <div className="grid grid-cols-1 gap-sm mt-md">
+            {currentQuestion.options.map((option) => (
+              <button
+                key={`${currentQuestion.id}-${String(option.value)}`}
+                type="button"
+                className="rounded-xl border border-outline-variant bg-surface-container-low p-md text-left hover:border-primary transition-colors"
+                onClick={() => submitAnswer(option.value)}
+              >
+                <span className="text-body font-body text-on-surface">{option.label}</span>
+              </button>
+            ))}
+          </div>
+        </article>
+      )}
+
+      {step === STEP.SEVERITY && (
+        <>
+          <article className="rounded-xl bg-surface-container-lowest border border-outline-variant p-md">
+            <h3 className="text-h2 font-h2 text-on-surface">How intense is the discomfort right now?</h3>
+            <p className="text-small font-small text-on-surface-variant mt-xs">
+              Choose from 1 (mild) to 10 (very severe).
+            </p>
+            <div className="grid grid-cols-5 gap-sm mt-md">
+              {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => (
+                <button
+                  key={value}
+                  type="button"
+                  className={`h-11 rounded-lg border text-small font-small ${
+                    painScale === value
+                      ? 'bg-primary text-on-primary border-primary'
+                      : 'bg-surface-container-low border-outline-variant text-on-surface'
+                  }`}
+                  onClick={() => setPainScale(value)}
+                >
+                  {value}
+                </button>
+              ))}
+            </div>
+          </article>
+          <button
+            type="button"
+            className="w-full h-[56px] rounded-full bg-primary text-on-primary text-h3 font-h3 disabled:bg-surface-container disabled:text-on-surface-variant"
+            disabled={painScale < 1}
+            onClick={() => setStep(STEP.ANALYSIS)}
+          >
+            Start Analysis
+          </button>
+        </>
+      )}
+
+      {step === STEP.ANALYSIS && (
+        <article className="rounded-xl bg-surface-container-lowest border border-outline-variant p-lg text-center">
+          <div className="mx-auto w-14 h-14 rounded-full border-4 border-surface-dim border-t-primary animate-spin" />
+          <h3 className="text-h2 font-h2 text-on-surface mt-md">Analyzing symptom patterns...</h3>
+          <p className="text-small font-small text-on-surface-variant mt-xs">
+            Evaluating severity indicators and preparing guidance.
+          </p>
+        </article>
+      )}
+
+      {step === STEP.RESULTS && (
+        <>
+          <article className="rounded-xl bg-surface-container-lowest border border-outline-variant p-md">
+            <h2 className="text-h1 font-h1 text-on-surface">Possible Conditions</h2>
+            <p className="text-body font-body text-on-surface-variant mt-xs">
+              Based on your answers, symptoms may indicate the following patterns.
+            </p>
+            <p className="text-small font-small mt-sm text-primary">
+              Overall severity signal: {toLabel(globalSeverity)}
+            </p>
+          </article>
+          {currentResults.map((result, index) => (
+            <ResultCard key={result.id} result={result} isTopResult={index === 0} />
+          ))}
+          <button
+            type="button"
+            className="w-full h-[56px] rounded-full bg-surface-container text-primary border border-outline-variant text-h3 font-h3"
+            onClick={() => setStep(STEP.RECOVERY)}
+          >
+            View Care Guidance
+          </button>
+        </>
+      )}
+
+      {step === STEP.RECOVERY && (
+        <>
+          <article className="rounded-xl bg-surface-container-lowest border border-outline-variant p-md">
+            <h3 className="text-h2 font-h2 text-on-surface">Care & Recovery Guidance</h3>
+            <ul className="mt-sm space-y-xs text-body font-body text-on-surface-variant">
+              <li>- Stay hydrated with water or oral rehydration solution.</li>
+              <li>- Take adequate rest and avoid heavy activity for 24-48 hours.</li>
+              <li>- Monitor warning signs like worsening breathing, persistent high fever, or confusion.</li>
+              <li>- Seek medical care early if symptoms worsen or do not improve.</li>
+            </ul>
+          </article>
+          <button
+            type="button"
+            className="w-full h-[56px] rounded-full bg-primary text-on-primary text-h3 font-h3"
+            onClick={clearAll}
+          >
+            Start New Assessment
+          </button>
+        </>
+      )}
+
+      {step === STEP.EMERGENCY && (
+        <>
+          <article className="rounded-xl bg-error-container border border-error/30 p-md">
+            <h3 className="text-h2 font-h2 text-on-error-container">Emergency Support Needed</h3>
+            <p className="text-body font-body text-on-error-container mt-xs">
+              Some severe indicators were detected. Please seek urgent medical support now.
+            </p>
+            <div className="mt-md space-y-xs text-small font-small text-on-error-container">
+              <p>- Call local emergency services immediately.</p>
+              <p>- Keep the person seated upright and calm.</p>
+              <p>- Do not delay care while waiting for symptoms to improve.</p>
+            </div>
+          </article>
+          <button
+            type="button"
+            className="w-full h-[56px] rounded-full bg-primary text-on-primary text-h3 font-h3"
+            onClick={clearAll}
+          >
+            Start New Assessment
+          </button>
+        </>
+      )}
+
+      {step > STEP.INTRO && (
+        <button
+          type="button"
+          className="text-small font-small text-primary underline underline-offset-4 self-end"
+          onClick={clearAll}
+        >
+          Reset Assessment
+        </button>
+      )}
+    </section>
   )
 }
 

@@ -1,0 +1,178 @@
+[
+  {
+    "id": "influenza",
+    "name": "Influenza (Flu)",
+    "category": "infectious",
+    "summary": "Acute viral respiratory infection with fever and body pain.",
+    "symptoms": ["fever", "headache", "cough", "fatigue", "body-ache", "chills"],
+    "weights": { "fever": 3, "headache": 2, "cough": 2, "fatigue": 2, "body-ache": 3, "chills": 3 },
+    "severity": "medium",
+    "precautions": ["Rest for 24-48 hours", "Stay hydrated", "Monitor temperature every 4-6 hours"],
+    "seekHelp": false
+  },
+  {
+    "id": "common-cold",
+    "name": "Common Cold",
+    "category": "infectious",
+    "summary": "Mild viral upper respiratory infection.",
+    "symptoms": ["runny-nose", "sneezing", "sore-throat", "cough", "nasal-congestion", "fatigue"],
+    "weights": { "runny-nose": 3, "sneezing": 3, "sore-throat": 2, "cough": 2, "nasal-congestion": 3, "fatigue": 1 },
+    "severity": "low",
+    "precautions": ["Drink warm fluids", "Use steam inhalation", "Take enough rest"],
+    "seekHelp": false
+  },
+  {
+    "id": "covid-19",
+    "name": "COVID-19",
+    "category": "infectious",
+    "summary": "Respiratory viral infection that may range from mild to severe.",
+    "symptoms": ["fever", "cough", "fatigue", "loss-of-taste", "loss-of-smell", "shortness-of-breath"],
+    "weights": { "fever": 3, "cough": 2, "fatigue": 2, "loss-of-taste": 4, "loss-of-smell": 4, "shortness-of-breath": 3 },
+    "severity": "high",
+    "precautions": ["Self-isolate", "Hydrate and monitor oxygen levels", "Consult doctor if breathing worsens"],
+    "seekHelp": true
+  },
+  {
+    "id": "chickenpox",
+    "name": "Chickenpox",
+    "category": "infectious",
+    "summary": "Contagious viral illness with itchy rash and fever.",
+    "symptoms": ["fever", "skin-rash", "itching", "fatigue", "headache"],
+    "weights": { "fever": 2, "skin-rash": 4, "itching": 4, "fatigue": 2, "headache": 1 },
+    "severity": "medium",
+    "precautions": ["Avoid scratching", "Use soothing lotion", "Keep nails trimmed and clean"],
+    "seekHelp": false
+  },
+  {
+    "id": "strep-throat",
+    "name": "Strep Throat",
+    "category": "infectious",
+    "summary": "Bacterial throat infection causing soreness and fever.",
+    "symptoms": ["sore-throat", "fever", "headache", "fatigue", "nausea"],
+    "weights": { "sore-throat": 4, "fever": 3, "headache": 2, "fatigue": 1, "nausea": 1 },
+    "severity": "medium",
+    "precautions": ["Gargle warm salt water", "Avoid cold beverages", "Seek medical advice for antibiotics"],
+    "seekHelp": true
+  },
+  {
+    "id": "asthma",
+    "name": "Asthma Flare",
+    "category": "chronic",
+    "summary": "Airway inflammation causing breathing difficulty and wheeze.",
+    "symptoms": ["wheezing", "shortness-of-breath", "chest-tightness", "cough"],
+    "weights": { "wheezing": 4, "shortness-of-breath": 4, "chest-tightness": 3, "cough": 2 },
+    "severity": "high",
+    "precautions": ["Use prescribed inhaler", "Sit upright and stay calm", "Avoid smoke and allergens"],
+    "seekHelp": true
+  },
+  {
+    "id": "diabetes-type-2",
+    "name": "Diabetes Type 2 (Possible Episode)",
+    "category": "chronic",
+    "summary": "Possible blood sugar imbalance pattern.",
+    "symptoms": ["high-blood-sugar", "frequent-urination", "increased-thirst", "fatigue", "blurred-vision"],
+    "weights": { "high-blood-sugar": 4, "frequent-urination": 3, "increased-thirst": 3, "fatigue": 2, "blurred-vision": 2 },
+    "severity": "medium",
+    "precautions": ["Drink water", "Check blood glucose if possible", "Avoid sugary foods temporarily"],
+    "seekHelp": true
+  },
+  {
+    "id": "hypertension",
+    "name": "Hypertension (Elevated BP Pattern)",
+    "category": "chronic",
+    "summary": "Blood pressure elevation pattern with headache or dizziness.",
+    "symptoms": ["headache", "dizziness", "chest-tightness", "blurred-vision"],
+    "weights": { "headache": 2, "dizziness": 3, "chest-tightness": 2, "blurred-vision": 2 },
+    "severity": "medium",
+    "precautions": ["Sit and rest quietly", "Reduce salt intake", "Track blood pressure if monitor available"],
+    "seekHelp": true
+  },
+  {
+    "id": "copd",
+    "name": "COPD Exacerbation",
+    "category": "chronic",
+    "summary": "Worsening chronic lung disease symptoms.",
+    "symptoms": ["shortness-of-breath", "cough", "wheezing", "fatigue", "chest-tightness"],
+    "weights": { "shortness-of-breath": 4, "cough": 2, "wheezing": 3, "fatigue": 2, "chest-tightness": 2 },
+    "severity": "high",
+    "precautions": ["Use prescribed medications", "Avoid exertion", "Seek immediate care if symptoms escalate"],
+    "seekHelp": true
+  },
+  {
+    "id": "gout",
+    "name": "Gout Flare",
+    "category": "chronic",
+    "summary": "Painful joint inflammation caused by uric acid crystal buildup.",
+    "symptoms": ["joint-pain", "swelling", "red-skin-patch"],
+    "weights": { "joint-pain": 4, "swelling": 3, "red-skin-patch": 2 },
+    "severity": "medium",
+    "precautions": ["Rest affected joint", "Apply cold compress", "Hydrate and avoid alcohol"],
+    "seekHelp": false
+  },
+  {
+    "id": "migraine",
+    "name": "Migraine",
+    "category": "localized",
+    "summary": "Recurring severe headache often with nausea.",
+    "symptoms": ["headache", "nausea", "vomiting", "dizziness"],
+    "weights": { "headache": 4, "nausea": 2, "vomiting": 2, "dizziness": 2 },
+    "severity": "medium",
+    "precautions": ["Rest in a dark room", "Hydrate slowly", "Reduce screen exposure"],
+    "seekHelp": false
+  },
+  {
+    "id": "allergies",
+    "name": "Allergic Reaction (Mild)",
+    "category": "localized",
+    "summary": "Immune response causing sneezing, itching, or rash.",
+    "symptoms": ["sneezing", "runny-nose", "itching", "skin-rash"],
+    "weights": { "sneezing": 3, "runny-nose": 3, "itching": 3, "skin-rash": 2 },
+    "severity": "low",
+    "precautions": ["Avoid known allergen", "Rinse face and hands", "Use prescribed antihistamine if available"],
+    "seekHelp": false
+  },
+  {
+    "id": "ringworm",
+    "name": "Ringworm",
+    "category": "localized",
+    "summary": "Fungal skin infection with circular itchy patches.",
+    "symptoms": ["red-skin-patch", "itching", "skin-rash"],
+    "weights": { "red-skin-patch": 4, "itching": 3, "skin-rash": 2 },
+    "severity": "low",
+    "precautions": ["Keep skin clean and dry", "Do not share towels", "Use antifungal cream"],
+    "seekHelp": false
+  },
+  {
+    "id": "athletes-foot",
+    "name": "Athlete's Foot",
+    "category": "localized",
+    "summary": "Fungal infection commonly affecting toes and soles.",
+    "symptoms": ["itching", "red-skin-patch", "skin-rash"],
+    "weights": { "itching": 3, "red-skin-patch": 3, "skin-rash": 2 },
+    "severity": "low",
+    "precautions": ["Keep feet dry", "Change socks regularly", "Use antifungal powder or cream"],
+    "seekHelp": false
+  },
+  {
+    "id": "pneumonia",
+    "name": "Pneumonia (Possible)",
+    "category": "infectious",
+    "summary": "Lung infection with cough, fever, and breathing distress.",
+    "symptoms": ["fever", "cough", "shortness-of-breath", "chills", "fatigue"],
+    "weights": { "fever": 3, "cough": 3, "shortness-of-breath": 4, "chills": 2, "fatigue": 2 },
+    "severity": "high",
+    "precautions": ["Rest and hydrate", "Track breathing effort", "Seek urgent doctor consultation"],
+    "seekHelp": true
+  },
+  {
+    "id": "gastroenteritis",
+    "name": "Gastroenteritis",
+    "category": "localized",
+    "summary": "Digestive infection causing vomiting and diarrhea.",
+    "symptoms": ["nausea", "vomiting", "diarrhea", "abdominal-pain", "dehydration"],
+    "weights": { "nausea": 2, "vomiting": 3, "diarrhea": 3, "abdominal-pain": 2, "dehydration": 3 },
+    "severity": "medium",
+    "precautions": ["Take oral rehydration solution", "Eat bland foods", "Avoid oily and spicy foods"],
+    "seekHelp": false
+  }
+]

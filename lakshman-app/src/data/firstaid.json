@@ -1,0 +1,161 @@
+[
+  {
+    "id": "heart-attack",
+    "name": "Heart Attack",
+    "icon": "❤️",
+    "description": "Possible heart attack needs immediate emergency response.",
+    "dos": ["Call 108 immediately", "Help person sit and stay calm", "Loosen tight clothing"],
+    "donts": ["Do not leave person alone", "Do not give heavy food or drinks"],
+    "warning": "LIFE THREATENING - Emergency services required immediately"
+  },
+  {
+    "id": "drowning",
+    "name": "Drowning",
+    "icon": "🌊",
+    "description": "Water inhalation can quickly reduce oxygen supply.",
+    "dos": ["Move person to a safe dry place", "Call 108", "Start CPR if trained and no breathing"],
+    "donts": ["Do not delay emergency call", "Do not shake the person violently"],
+    "warning": "LIFE THREATENING - Emergency services required immediately"
+  },
+  {
+    "id": "vomiting",
+    "name": "Vomiting",
+    "icon": "🤢",
+    "description": "Repeated vomiting can cause dehydration.",
+    "dos": ["Give small sips of oral rehydration solution", "Let person rest", "Monitor frequency"],
+    "donts": ["Do not force solid food immediately", "Do not give very sugary drinks"],
+    "warning": null
+  },
+  {
+    "id": "dehydration",
+    "name": "Dehydration",
+    "icon": "💧",
+    "description": "Loss of fluids causes weakness and dizziness.",
+    "dos": ["Give oral rehydration salts", "Move to cool shaded area", "Rest and monitor urine output"],
+    "donts": ["Do not wait if confusion appears", "Do not give only caffeinated drinks"],
+    "warning": null
+  },
+  {
+    "id": "burns",
+    "name": "Burns",
+    "icon": "🔥",
+    "subtypes": [
+      {
+        "id": "burns-1",
+        "label": "First Degree",
+        "description": "Redness, minor pain, no blisters.",
+        "dos": ["Cool with running water for at least 10 minutes", "Cover loosely with sterile gauze"],
+        "donts": ["Do not apply ice", "Do not apply butter or toothpaste"],
+        "warning": null
+      },
+      {
+        "id": "burns-2",
+        "label": "Second Degree",
+        "description": "Blisters and deeper skin damage with severe pain.",
+        "dos": ["Cool with water", "Cover with non-stick sterile dressing", "Seek medical care"],
+        "donts": ["Do not pop blisters", "Do not apply oils or powders"],
+        "warning": "Needs urgent medical review"
+      },
+      {
+        "id": "burns-3",
+        "label": "Third Degree",
+        "description": "Charred or white skin, possible numbness due to nerve damage.",
+        "dos": ["Call 108 immediately", "Cover area with sterile cloth", "Keep person warm and still"],
+        "donts": ["Do not pour water on severe burn", "Do not remove stuck clothing"],
+        "warning": "LIFE THREATENING - Emergency services required immediately"
+      }
+    ]
+  },
+  {
+    "id": "snake-bite",
+    "name": "Snake Bite",
+    "icon": "🐍",
+    "description": "Venomous bites can rapidly become life threatening.",
+    "dos": ["Keep person calm and still", "Immobilize bitten limb", "Call 108 urgently"],
+    "donts": ["Do not cut or suck wound", "Do not apply tight tourniquet"],
+    "warning": "LIFE THREATENING - Emergency services required immediately"
+  },
+  {
+    "id": "frostbite",
+    "name": "Frostbite",
+    "icon": "🧊",
+    "description": "Cold injury causes numb, pale, or hard skin.",
+    "dos": ["Move to warm shelter", "Warm area gradually with body heat or lukewarm water", "Protect from re-freezing"],
+    "donts": ["Do not rub affected skin", "Do not use direct high heat"],
+    "warning": null
+  },
+  {
+    "id": "sprain",
+    "name": "Sprain",
+    "icon": "🦶",
+    "description": "Ligament injury causing swelling and pain.",
+    "dos": ["Rest the joint", "Apply ice wrapped in cloth", "Use compression and elevation"],
+    "donts": ["Do not force movement", "Do not resume activity too early"],
+    "warning": null
+  },
+  {
+    "id": "muscle-cramp",
+    "name": "Muscle Cramp",
+    "icon": "🦵",
+    "description": "Sudden painful muscle contraction.",
+    "dos": ["Gently stretch the muscle", "Hydrate with fluids", "Massage lightly once pain reduces"],
+    "donts": ["Do not overstretch abruptly", "Do not continue strenuous activity immediately"],
+    "warning": null
+  },
+  {
+    "id": "bleeding",
+    "name": "Bleeding / Cuts & Bruises",
+    "icon": "🩸",
+    "description": "External injuries need cleaning, pressure, and observation.",
+    "dos": ["Apply direct pressure with clean cloth", "Clean minor wounds with clean water", "Elevate injured part if possible"],
+    "donts": ["Do not remove deeply embedded objects", "Do not apply dirty materials"],
+    "warning": null
+  },
+  {
+    "id": "fractures",
+    "name": "Fractures",
+    "icon": "🦴",
+    "subtypes": [
+      {
+        "id": "fracture-greenstick",
+        "label": "Greenstick",
+        "description": "Partial bone crack, common in children.",
+        "dos": ["Immobilize limb using splint", "Apply cold compress", "Seek X-ray evaluation"],
+        "donts": ["Do not force straightening", "Do not move repeatedly"],
+        "warning": null
+      },
+      {
+        "id": "fracture-spiral",
+        "label": "Spiral",
+        "description": "Twisting injury fracture pattern.",
+        "dos": ["Immobilize above and below injury", "Call for medical transport"],
+        "donts": ["Do not rotate limb", "Do not walk on injured limb"],
+        "warning": "Requires urgent medical care"
+      },
+      {
+        "id": "fracture-comminuted",
+        "label": "Comminuted",
+        "description": "Bone broken into multiple pieces.",
+        "dos": ["Keep patient still", "Immobilize gently", "Call emergency service"],
+        "donts": ["Do not apply forceful pressure", "Do not move patient unnecessarily"],
+        "warning": "Likely severe injury - urgent care required"
+      },
+      {
+        "id": "fracture-compound",
+        "label": "Compound",
+        "description": "Open fracture with bone protrusion and bleeding risk.",
+        "dos": ["Call 108 immediately", "Cover wound with sterile dressing", "Immobilize without pushing bone back"],
+        "donts": ["Do not push exposed bone back", "Do not wash deep open fracture aggressively"],
+        "warning": "LIFE THREATENING - Emergency services required immediately"
+      },
+      {
+        "id": "fracture-dislocation",
+        "label": "Dislocation",
+        "description": "Bone displaced from normal joint position.",
+        "dos": ["Immobilize in current position", "Apply cold compress", "Seek urgent professional reduction"],
+        "donts": ["Do not force joint back", "Do not move joint repeatedly"],
+        "warning": "Needs urgent medical treatment"
+      }
+    ]
+  }
+]

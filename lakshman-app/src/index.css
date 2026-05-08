@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+body {
+  @apply bg-background text-on-background font-body antialiased min-h-screen flex flex-col pb-[64px] md:pb-0;
+  min-height: max(884px, 100dvh);
+}
+
+#root {
+  @apply min-h-screen;
+}

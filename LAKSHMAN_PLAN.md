@@ -89,10 +89,10 @@ A panic/stress relief tool built around guided breathing cycles.
 | 2 | Matching Engine & Logic | ✅ Done | 6 | 6 |
 | 3 | Symptom Checker UI | ✅ Done | 7 | 7 |
 | 4 | First Aid Module | ✅ Done | 6 | 6 |
-| 5 | Breathing Module & Nav | ⬜ Not Started | 0 | 5 |
+| 5 | Breathing Module & Nav | ✅ Done | 5 | 5 |
 | 6 | Polish, PWA & Deploy | ⬜ Not Started | 0 | 7 |
 
-**Total:** 27 / 39 tasks complete · 69% done
+**Total:** 32 / 39 tasks complete · 82% done
 
 > **How to update:** Change `⬜ Not Started` → `🔄 In Progress` → `✅ Done`. Update the numbers in Tasks Done column. Recalculate the total at the bottom.
 
@@ -286,21 +286,21 @@ export function runMatcher(input) {
 
 **Goal:** Breathing timer works with animated circle, phase labels, and cycle counter. Bottom navigation is functional across all three pages.
 **Estimated time:** 30–45 min
-**Status:** ⬜ Not Started
-**Progress:** 0 / 5 tasks
+**Status:** ✅ Done
+**Progress:** 5 / 5 tasks
 
 ### Stats
-- Tasks complete: **0 / 5**
-- Blockers: Phase 3 and 4 should be done (nav needs all pages to exist)
-- Notes: Refer to `ui.md` for breathing animation specs and nav bar design
+- Tasks complete: **5 / 5**
+- Blockers: none
+- Notes: Phase 5 breathing and navigation milestone completed per `ui.md`.
 
 ### Tasks
 
-- [ ] **5.1** Build `BreathCircle.jsx` — animated SVG or div circle; CSS keyframes scale 0.6→1.0 (inhale), hold 1.0, scale 1.0→0.6 (exhale); animation-duration driven by phase timings
-- [ ] **5.2** Build `BreathingTimer.jsx` — manages phase state machine (inhale → hold → exhale → inhale), countdown within each phase, cycle counter increments on exhale completion
-- [ ] **5.3** Build `Breathe.jsx` page — assembles BreathCircle + BreathingTimer, start/pause control, short explanation text
-- [ ] **5.4** Build bottom navigation component — three tabs (Symptom Checker / First Aid / Breathe), active tab highlighted, fixed to bottom on mobile
-- [ ] **5.5** Commit: `feat: breathing module + navigation complete`
+- [x] **5.1** Build `BreathCircle.jsx` — animated SVG or div circle; CSS keyframes scale 0.6→1.0 (inhale), hold 1.0, scale 1.0→0.6 (exhale); animation-duration driven by phase timings
+- [x] **5.2** Build `BreathingTimer.jsx` — manages phase state machine (inhale → hold → exhale → inhale), countdown within each phase, cycle counter increments on exhale completion
+- [x] **5.3** Build `Breathe.jsx` page — assembles BreathCircle + BreathingTimer, start/pause control, short explanation text
+- [x] **5.4** Build bottom navigation component — three tabs (Symptom Checker / First Aid / Breathe), active tab highlighted, fixed to bottom on mobile
+- [x] **5.5** Commit: `feat: breathing module + navigation complete`
 
 ### Breathing Phase Timings (default)
 | Phase | Duration | Animation |

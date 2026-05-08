@@ -35,6 +35,13 @@
   }
 }
 
+.breathe-circle {
+  transition:
+    width 0.5s ease-in-out,
+    height 0.5s ease-in-out,
+    background-color 0.5s ease-in-out;
+}
+
 .emergency-enter {
   animation: slideUp 300ms ease-out forwards;
 }

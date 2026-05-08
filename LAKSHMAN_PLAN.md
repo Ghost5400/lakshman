@@ -84,14 +84,14 @@ A panic/stress relief tool built around guided breathing cycles.
 
 | Phase | Name | Status | Tasks Done | Tasks Total |
 |-------|------|--------|------------|-------------|
-| 1 | Foundation & Data Layer | 🔄 In Progress | 7 | 8 |
+| 1 | Foundation & Data Layer | ✅ Done | 8 | 8 |
 | 2 | Matching Engine & Logic | ⬜ Not Started | 0 | 6 |
 | 3 | Symptom Checker UI | ⬜ Not Started | 0 | 7 |
 | 4 | First Aid Module | ⬜ Not Started | 0 | 6 |
 | 5 | Breathing Module & Nav | ⬜ Not Started | 0 | 5 |
 | 6 | Polish, PWA & Deploy | ⬜ Not Started | 0 | 7 |
 
-**Total:** 7 / 39 tasks complete · 18% done
+**Total:** 8 / 39 tasks complete · 21% done
 
 > **How to update:** Change `⬜ Not Started` → `🔄 In Progress` → `✅ Done`. Update the numbers in Tasks Done column. Recalculate the total at the bottom.
 
@@ -103,13 +103,13 @@ A panic/stress relief tool built around guided breathing cycles.
 
 **Goal:** Project scaffold is running, all three JSON datasets are complete, folder structure is in place.
 **Estimated time:** 45–60 min
-**Status:** 🔄 In Progress
-**Progress:** 7 / 8 tasks
+**Status:** ✅ Done
+**Progress:** 8 / 8 tasks
 
 ### Stats
-- Tasks complete: **7 / 8**
+- Tasks complete: **8 / 8**
 - Blockers: none
-- Notes: App scaffold created in `lakshman-app`; waiting for Phase 1 milestone commit.
+- Notes: Phase 1 milestone committed and pushed.
 
 ### Tasks
 
@@ -120,7 +120,7 @@ A panic/stress relief tool built around guided breathing cycles.
 - [x] **1.5** Build `symptoms.json` — flat array of ~30 symptom strings
 - [x] **1.6** Build `diseases.json` — 16 diseases with symptom arrays, weight maps, severity, precautions, seekHelp flag
 - [x] **1.7** Build `firstaid.json` — 12 categories, with full subtypes for burns (3) and fractures (5)
-- [ ] **1.8** Commit: `init: scaffold + tailwind + data layer`
+- [x] **1.8** Commit: `init: scaffold + tailwind + data layer`
 
 ### diseases.json Schema (reference)
 ```json
@@ -360,7 +360,7 @@ Track every commit here for quick reference.
 
 | # | Hash (short) | Message | Phase |
 |---|-------------|---------|-------|
-| 1 | — | `init: scaffold + tailwind + data layer` | 1 |
+| 1 | `56ee396` | `init: scaffold + tailwind + data layer` | 1 |
 | 2 | — | `feat: symptom matching engine` | 2 |
 | 3 | — | `feat: symptom checker UI complete` | 3 |
 | 4 | — | `feat: first aid module complete` | 4 |

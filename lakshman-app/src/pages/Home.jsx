@@ -242,10 +242,15 @@ function Home() {
   const [answers, setAnswers] = useState({})
   const [questionIndex, setQuestionIndex] = useState(0)
   const [painScale, setPainScale] = useState(0)
-  const [results, setResults] = useState([])
-  const [showEmergency, setShowEmergency] = useState(false)
+  const [, setResults] = useState([])
+  const [primaryResult, setPrimaryResult] = useState(null)
+  const [secondaryResults, setSecondaryResults] = useState([])
+  const [, setShowEmergency] = useState(false)
   const [globalSeverity, setGlobalSeverity] = useState('mild')
+  const [severityLabel, setSeverityLabel] = useState('Mild')
   const [assessmentMessage, setAssessmentMessage] = useState('')
+  const [primaryReason, setPrimaryReason] = useState('')
+  const [seekHelpIf, setSeekHelpIf] = useState([])
 
   const clearAll = () => {
     setStep(STEP.INTRO)
@@ -256,9 +261,14 @@ function Home() {
     setQuestionIndex(0)
     setPainScale(0)
     setResults([])
+    setPrimaryResult(null)
+    setSecondaryResults([])
     setShowEmergency(false)
     setGlobalSeverity('mild')
+    setSeverityLabel('Mild')
     setAssessmentMessage('')
+    setPrimaryReason('')
+    setSeekHelpIf([])
   }
 
   const questions = useMemo(() => buildQuestions(selectedSymptoms, selectedRegion), [
@@ -272,8 +282,6 @@ function Home() {
     return selectedSymptoms.filter((symptom) => hints.includes(symptom))
   }, [selectedRegion, selectedSymptoms])
 
-  const currentResults = useMemo(() => results.slice(0, 3), [results])
-
   const finalizeAssessment = () => {
     const match = runMatcher(selectedSymptoms, {
       answers,
@@ -282,9 +290,14 @@ function Home() {
       personType,
     })
     setResults(match.results)
+    setPrimaryResult(match.primaryResult ?? null)
+    setSecondaryResults(match.secondaryResults ?? [])
     setShowEmergency(match.emergency)
     setGlobalSeverity(match.globalSeverity ?? 'mild')
+    setSeverityLabel(match.severityLabel ?? 'Mild')
     setAssessmentMessage(match.assessmentMessage ?? '')
+    setPrimaryReason(match.primaryReason ?? '')
+    setSeekHelpIf(match.seekHelpIf ?? [])
     setStep(match.emergency ? STEP.EMERGENCY : STEP.RESULTS)
   }
 
@@ -492,7 +505,7 @@ function Home() {
       {step === STEP.RESULTS && (
         <>
           <article className="rounded-xl bg-surface-container-lowest border border-outline-variant p-md">
-            <h2 className="text-h1 font-h1 text-on-surface">Possible Conditions</h2>
+            <h2 className="text-h1 font-h1 text-on-surface">Assessment Result</h2>
             <p className="text-body font-body text-on-surface-variant mt-xs">
               {assessmentMessage || 'Based on your answers, symptoms currently match the following patterns.'}
             </p>
@@ -500,9 +513,59 @@ function Home() {
               Overall severity signal: {toLabel(globalSeverity)}
             </p>
           </article>
-          {currentResults.map((result, index) => (
-            <ResultCard key={result.id} result={result} isTopResult={index === 0} />
-          ))}
+          {primaryResult && (
+            <article className="rounded-xl bg-surface-container-lowest border border-primary/40 p-md shadow-sm">
+              <p className="text-micro font-micro uppercase tracking-wider text-primary">Most Likely Condition</p>
+              <div className="mt-xs">
+                <ResultCard result={primaryResult} isTopResult />
+              </div>
+              {primaryReason && (
+                <div className="mt-md rounded-lg border border-outline-variant bg-surface-container-low p-sm">
+                  <p className="text-small font-small text-on-surface">
+                    <span className="text-on-surface-variant">Why this result:</span> {primaryReason}
+                  </p>
+                </div>
+              )}
+            </article>
+          )}
+
+          {secondaryResults.length > 0 && (
+            <article className="rounded-xl bg-surface-container-lowest border border-outline-variant p-md">
+              <h3 className="text-h2 font-h2 text-on-surface">Other Possible Conditions</h3>
+              <ul className="mt-sm space-y-xs text-body font-body text-on-surface">
+                {secondaryResults.map((result) => (
+                  <li key={result.id}>
+                    - {result.name} ({result.confidence}%)
+                  </li>
+                ))}
+              </ul>
+            </article>
+          )}
+
+          <article className="rounded-xl bg-surface-container-lowest border border-outline-variant p-md">
+            <h3 className="text-h2 font-h2 text-on-surface">Severity</h3>
+            <p className="text-body font-body text-on-surface-variant mt-xs">{severityLabel}</p>
+          </article>
+
+          {primaryResult?.precautions?.length > 0 && (
+            <article className="rounded-xl bg-surface-container-lowest border border-outline-variant p-md">
+              <h3 className="text-h2 font-h2 text-on-surface">Recommended Care</h3>
+              <ul className="mt-sm space-y-xs text-body font-body text-on-surface-variant">
+                {primaryResult.precautions.map((item) => (
+                  <li key={item}>- {item}</li>
+                ))}
+              </ul>
+            </article>
+          )}
+
+          <article className="rounded-xl bg-surface-container-lowest border border-outline-variant p-md">
+            <h3 className="text-h2 font-h2 text-on-surface">Seek Medical Help If</h3>
+            <ul className="mt-sm space-y-xs text-body font-body text-on-surface-variant">
+              {seekHelpIf.map((item) => (
+                <li key={item}>- {item}</li>
+              ))}
+            </ul>
+          </article>
           <button
             type="button"
             className="w-full h-[56px] rounded-full bg-surface-container text-primary border border-outline-variant text-h3 font-h3"

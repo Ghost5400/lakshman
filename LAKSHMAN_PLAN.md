@@ -88,11 +88,11 @@ A panic/stress relief tool built around guided breathing cycles.
 | 1 | Foundation & Data Layer | ✅ Done | 8 | 8 |
 | 2 | Matching Engine & Logic | ✅ Done | 6 | 6 |
 | 3 | Symptom Checker UI | ✅ Done | 7 | 7 |
-| 4 | First Aid Module | ⬜ Not Started | 0 | 6 |
+| 4 | First Aid Module | ✅ Done | 6 | 6 |
 | 5 | Breathing Module & Nav | ⬜ Not Started | 0 | 5 |
 | 6 | Polish, PWA & Deploy | ⬜ Not Started | 0 | 7 |
 
-**Total:** 21 / 39 tasks complete · 54% done
+**Total:** 27 / 39 tasks complete · 69% done
 
 > **How to update:** Change `⬜ Not Started` → `🔄 In Progress` → `✅ Done`. Update the numbers in Tasks Done column. Recalculate the total at the bottom.
 
@@ -236,22 +236,22 @@ export function runMatcher(input) {
 
 **Goal:** First Aid page shows all 12 category cards. Tapping any card navigates to its detail view with full dos/don'ts/warnings. Burns and fractures show sub-type selection.
 **Estimated time:** 45–60 min
-**Status:** ⬜ Not Started
-**Progress:** 0 / 6 tasks
+**Status:** ✅ Done
+**Progress:** 6 / 6 tasks
 
 ### Stats
-- Tasks complete: **0 / 6**
-- Blockers: Phase 1 must be complete (needs firstaid.json)
-- Notes: Refer to `ui.md` for card grid layout and detail page structure
+- Tasks complete: **6 / 6**
+- Blockers: none
+- Notes: First Aid grid/detail flow completed per `ui.md` with burns/fractures subtype selectors and warning states.
 
 ### Tasks
 
-- [ ] **4.1** Build `CategoryGrid.jsx` — 2-column card grid, each card shows icon + name, tappable
-- [ ] **4.2** Build `GuideDetail.jsx` — renders a first aid category's content: description, dos list (green), donts list (red), warning banner (if present)
-- [ ] **4.3** Add sub-type selector for Burns — tab or pill selector for First / Second / Third Degree, content swaps on selection
-- [ ] **4.4** Add sub-type selector for Fractures — same pattern, 5 types
-- [ ] **4.5** Build `FirstAid.jsx` page — manages selected category state, toggles between grid view and detail view
-- [ ] **4.6** Commit: `feat: first aid module complete`
+- [x] **4.1** Build `CategoryGrid.jsx` — 2-column card grid, each card shows icon + name, tappable
+- [x] **4.2** Build `GuideDetail.jsx` — renders a first aid category's content: description, dos list (green), donts list (red), warning banner (if present)
+- [x] **4.3** Add sub-type selector for Burns — tab or pill selector for First / Second / Third Degree, content swaps on selection
+- [x] **4.4** Add sub-type selector for Fractures — same pattern, 5 types
+- [x] **4.5** Build `FirstAid.jsx` page — manages selected category state, toggles between grid view and detail view
+- [x] **4.6** Commit: `feat: first aid module complete`
 
 ### firstaid.json Schema (reference)
 ```json

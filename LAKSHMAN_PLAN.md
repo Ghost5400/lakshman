@@ -23,6 +23,7 @@ This is the **living master plan** for LAKSHMAN. Every time you start a new sess
 3. **Git Rule:** At the end of each phase, prepare a milestone commit using the planned message style (`feat:`, `fix:`, etc.).
 4. **Push Confirmation Rule:** **Never push automatically.** Push to GitHub only after explicit user confirmation.
 5. **Repo Link Rule:** Primary GitHub remote for this project is `https://github.com/Ghost5400/lakshman`.
+6. **Phase Verification Rule:** After every completed phase, provide a short tester-facing note: what UI/behavior should now be visible, how key flows should work, and 3+ manual verification steps with expected outcomes (including Vercel checks when deployed).
 
 ---
 

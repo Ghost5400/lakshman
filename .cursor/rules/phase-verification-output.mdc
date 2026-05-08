@@ -1,0 +1,17 @@
+---
+description: Require post-phase verification walkthrough
+alwaysApply: true
+---
+
+# Phase Verification Output Rule
+
+After completing any phase in `LAKSHMAN_PLAN.md`, always include a short "What you should see now" verification section.
+
+Required checklist for each completed phase:
+- Explain exactly what changed in the app from the user perspective.
+- Describe how the app should behave when the user clicks/tests key flows.
+- Provide at least 3 concrete manual verification steps.
+- Mention expected results for each step.
+- If relevant, include a quick Vercel verification note for deployed behavior.
+
+Keep this verification section concise and practical so the user can test immediately.

@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "installCommand": "cd lakshman-app && npm install",
+  "buildCommand": "cd lakshman-app && npm run build",
+  "outputDirectory": "lakshman-app/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -55,15 +55,19 @@ function buildQuestions(selectedSymptoms = [], region = '') {
         { label: 'More than 1 week', value: 10 },
       ],
     },
-    {
-      id: 'suddenOnset',
-      prompt: 'Did the symptoms begin suddenly?',
-      options: [
-        { label: 'Yes', value: true },
-        { label: 'No', value: false },
-      ],
-    },
   ]
+
+  if (includes('fever')) {
+    questions.push({
+      id: 'feverIntensity',
+      prompt: 'How intense is the fever right now?',
+      options: [
+        { label: 'Mild / low-grade', value: 'mild' },
+        { label: 'Moderate', value: 'moderate' },
+        { label: 'High fever', value: 'high' },
+      ],
+    })
+  }
 
   if (includes('cough')) {
     questions.push({
@@ -73,6 +77,44 @@ function buildQuestions(selectedSymptoms = [], region = '') {
         { label: 'Mostly dry cough', value: 'dry' },
         { label: 'Wet cough with mucus', value: 'wet' },
         { label: 'Not sure', value: 'unknown' },
+      ],
+    })
+    questions.push({
+      id: 'mucusPresent',
+      prompt: 'Are you coughing up mucus/phlegm?',
+      options: [
+        { label: 'Yes', value: true },
+        { label: 'No', value: false },
+      ],
+    })
+  }
+
+  if (includes('fever') || includes('cough') || includes('sore-throat')) {
+    questions.push({
+      id: 'bodyPainLevel',
+      prompt: 'How strong are body aches or muscle pain?',
+      options: [
+        { label: 'None', value: 0 },
+        { label: 'Mild', value: 1 },
+        { label: 'Moderate', value: 2 },
+        { label: 'Severe', value: 3 },
+      ],
+    })
+    questions.push({
+      id: 'soreThroatNow',
+      prompt: 'Do you currently have a sore or irritated throat?',
+      options: [
+        { label: 'Yes', value: true },
+        { label: 'No', value: false },
+      ],
+    })
+    questions.push({
+      id: 'fatigueLevel',
+      prompt: 'How much fatigue are you feeling?',
+      options: [
+        { label: 'Low', value: 1 },
+        { label: 'Moderate', value: 2 },
+        { label: 'High', value: 3 },
       ],
     })
   }
@@ -90,8 +132,90 @@ function buildQuestions(selectedSymptoms = [], region = '') {
   }
 
   questions.push({
+    id: 'symptomsWorsening',
+    prompt: 'Are your symptoms getting worse compared to yesterday?',
+    options: [
+      { label: 'Yes', value: true },
+      { label: 'No', value: false },
+    ],
+  })
+
+  questions.push({
+    id: 'activityTolerance',
+    prompt: 'Can you do your usual daily activities?',
+    options: [
+      { label: 'Yes, mostly normal', value: 'normal' },
+      { label: 'Partly limited', value: 'limited' },
+      { label: 'No, very difficult', value: 'unable' },
+    ],
+  })
+
+  questions.push({
+    id: 'dizzinessNow',
+    prompt: 'Any dizziness or lightheaded feeling?',
+    options: [
+      { label: 'Yes', value: true },
+      { label: 'No', value: false },
+    ],
+  })
+
+  questions.push({
+    id: 'chestTightnessNow',
+    prompt: 'Any chest tightness right now?',
+    options: [
+      { label: 'Yes', value: true },
+      { label: 'No', value: false },
+    ],
+  })
+
+  questions.push({
     id: 'severeWeakness',
-    prompt: 'Are you feeling unusual weakness or unable to do normal activity?',
+    prompt: 'Are you feeling unusual weakness or unable to stay active?',
+    options: [
+      { label: 'Yes', value: true },
+      { label: 'No', value: false },
+    ],
+  })
+
+  questions.push({
+    id: 'chestPainNow',
+    prompt: 'Emergency check: Any chest pain right now?',
+    options: [
+      { label: 'Yes', value: true },
+      { label: 'No', value: false },
+    ],
+  })
+
+  questions.push({
+    id: 'severeBreathingIssue',
+    prompt: 'Emergency check: Is breathing severely difficult even at rest?',
+    options: [
+      { label: 'Yes', value: true },
+      { label: 'No', value: false },
+    ],
+  })
+
+  questions.push({
+    id: 'blueLips',
+    prompt: 'Emergency check: Any blue/gray lips or fingertips?',
+    options: [
+      { label: 'Yes', value: true },
+      { label: 'No', value: false },
+    ],
+  })
+
+  questions.push({
+    id: 'confusionNow',
+    prompt: 'Emergency check: Any sudden confusion or disorientation?',
+    options: [
+      { label: 'Yes', value: true },
+      { label: 'No', value: false },
+    ],
+  })
+
+  questions.push({
+    id: 'coughingBlood',
+    prompt: 'Emergency check: Are you coughing up blood?',
     options: [
       { label: 'Yes', value: true },
       { label: 'No', value: false },
@@ -121,6 +245,7 @@ function Home() {
   const [results, setResults] = useState([])
   const [showEmergency, setShowEmergency] = useState(false)
   const [globalSeverity, setGlobalSeverity] = useState('mild')
+  const [assessmentMessage, setAssessmentMessage] = useState('')
 
   const clearAll = () => {
     setStep(STEP.INTRO)
@@ -133,6 +258,7 @@ function Home() {
     setResults([])
     setShowEmergency(false)
     setGlobalSeverity('mild')
+    setAssessmentMessage('')
   }
 
   const questions = useMemo(() => buildQuestions(selectedSymptoms, selectedRegion), [
@@ -158,6 +284,7 @@ function Home() {
     setResults(match.results)
     setShowEmergency(match.emergency)
     setGlobalSeverity(match.globalSeverity ?? 'mild')
+    setAssessmentMessage(match.assessmentMessage ?? '')
     setStep(match.emergency ? STEP.EMERGENCY : STEP.RESULTS)
   }
 
@@ -367,7 +494,7 @@ function Home() {
           <article className="rounded-xl bg-surface-container-lowest border border-outline-variant p-md">
             <h2 className="text-h1 font-h1 text-on-surface">Possible Conditions</h2>
             <p className="text-body font-body text-on-surface-variant mt-xs">
-              Based on your answers, symptoms may indicate the following patterns.
+              {assessmentMessage || 'Based on your answers, symptoms currently match the following patterns.'}
             </p>
             <p className="text-small font-small mt-sm text-primary">
               Overall severity signal: {toLabel(globalSeverity)}

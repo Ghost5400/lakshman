@@ -35,6 +35,17 @@
   }
 }
 
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .breathe-circle {
   transition:
     width 0.5s ease-in-out,
@@ -44,6 +55,17 @@
 
 .emergency-enter {
   animation: slideUp 300ms ease-out forwards;
+}
+
+.page-fade-in {
+  animation: page-fade-in 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-fade-in,
+  .emergency-enter {
+    animation: none;
+  }
 }
 
 body {

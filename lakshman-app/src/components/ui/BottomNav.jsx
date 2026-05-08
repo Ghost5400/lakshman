@@ -15,7 +15,9 @@ function BottomNav() {
           to={item.to}
           className={({ isActive }) =>
             `flex flex-col items-center justify-center w-full h-full transition-colors ${
-              isActive ? 'text-primary font-semibold scale-95' : 'text-on-secondary-fixed-variant'
+              isActive
+                ? 'text-primary font-semibold scale-95 hover:bg-surface-container-low'
+                : 'text-on-secondary-fixed-variant hover:bg-surface-container-low'
             }`
           }
           aria-label={item.label}

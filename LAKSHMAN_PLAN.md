@@ -90,9 +90,9 @@ A panic/stress relief tool built around guided breathing cycles.
 | 3 | Symptom Checker UI | ✅ Done | 7 | 7 |
 | 4 | First Aid Module | ✅ Done | 6 | 6 |
 | 5 | Breathing Module & Nav | ✅ Done | 5 | 5 |
-| 6 | Polish, PWA & Deploy | ⬜ Not Started | 0 | 7 |
+| 6 | Polish, PWA & Deploy | ✅ Done | 7 | 7 |
 
-**Total:** 32 / 39 tasks complete · 82% done
+**Total:** 39 / 39 tasks complete · 100% done
 
 > **How to update:** Change `⬜ Not Started` → `🔄 In Progress` → `✅ Done`. Update the numbers in Tasks Done column. Recalculate the total at the bottom.
 
@@ -318,23 +318,23 @@ export function runMatcher(input) {
 
 **Goal:** App looks polished, feels fast, passes mobile viewport check, is deployed to Vercel with a public URL ready for judges.
 **Estimated time:** 30–45 min
-**Status:** ⬜ Not Started
-**Progress:** 0 / 7 tasks
+**Status:** ✅ Done
+**Progress:** 7 / 7 tasks
 
 ### Stats
-- Tasks complete: **0 / 7**
-- Blockers: Phases 1–5 must be complete
-- Notes: Deploy early (at start of this phase) to catch Vercel config issues before the deadline
+- Tasks complete: **7 / 7**
+- Blockers: none
+- Notes: Production deployed and aliased at `https://lakshman-three.vercel.app`; styling polish, mobile pass, transitions, PWA, confidence animation, and release milestone commit completed.
 
 ### Tasks
 
-- [ ] **6.1** **Deploy first** — `vercel --prod` from project root, confirm public URL works on mobile browser
-- [ ] **6.2** Tailwind styling pass — enforce design system colors, spacing, badge colors, emergency modal red, bottom nav active state
-- [ ] **6.3** Test all flows on 375px mobile viewport (DevTools), fix any overflow or touch target issues
-- [ ] **6.4** Add smooth page transitions (Tailwind `transition` classes or simple CSS fade)
-- [ ] **6.5** *(Stretch)* Add `vite-plugin-pwa` — manifest.json + service worker for "Add to Home Screen" — ~20 min
-- [ ] **6.6** *(Stretch)* Add confidence bar CSS fill animation (transition width on load)
-- [ ] **6.7** Final commit: `deploy: production build v1.0` · tag as `v1.0`
+- [x] **6.1** **Deploy first** — `vercel --prod` from project root, confirm public URL works on mobile browser
+- [x] **6.2** Tailwind styling pass — enforce design system colors, spacing, badge colors, emergency modal red, bottom nav active state
+- [x] **6.3** Test all flows on 375px mobile viewport (DevTools), fix any overflow or touch target issues
+- [x] **6.4** Add smooth page transitions (Tailwind `transition` classes or simple CSS fade)
+- [x] **6.5** *(Stretch)* Add `vite-plugin-pwa` — manifest.json + service worker for "Add to Home Screen" — ~20 min
+- [x] **6.6** *(Stretch)* Add confidence bar CSS fill animation (transition width on load)
+- [x] **6.7** Final commit: `deploy: production build v1.0` · tag as `v1.0`
 
 ### Vercel Deploy Commands
 ```bash

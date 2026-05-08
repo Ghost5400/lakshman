@@ -85,13 +85,13 @@ A panic/stress relief tool built around guided breathing cycles.
 | Phase | Name | Status | Tasks Done | Tasks Total |
 |-------|------|--------|------------|-------------|
 | 1 | Foundation & Data Layer | ✅ Done | 8 | 8 |
-| 2 | Matching Engine & Logic | ⬜ Not Started | 0 | 6 |
+| 2 | Matching Engine & Logic | ✅ Done | 6 | 6 |
 | 3 | Symptom Checker UI | ⬜ Not Started | 0 | 7 |
 | 4 | First Aid Module | ⬜ Not Started | 0 | 6 |
 | 5 | Breathing Module & Nav | ⬜ Not Started | 0 | 5 |
 | 6 | Polish, PWA & Deploy | ⬜ Not Started | 0 | 7 |
 
-**Total:** 8 / 39 tasks complete · 21% done
+**Total:** 14 / 39 tasks complete · 36% done
 
 > **How to update:** Change `⬜ Not Started` → `🔄 In Progress` → `✅ Done`. Update the numbers in Tasks Done column. Recalculate the total at the bottom.
 
@@ -150,22 +150,22 @@ A panic/stress relief tool built around guided breathing cycles.
 
 **Goal:** `matcher.js` is complete, tested in browser console, returns correct results for known inputs.
 **Estimated time:** 30–45 min
-**Status:** ⬜ Not Started
-**Progress:** 0 / 6 tasks
+**Status:** ✅ Done
+**Progress:** 6 / 6 tasks
 
 ### Stats
-- Tasks complete: **0 / 6**
-- Blockers: Phase 1 must be complete
-- Notes: —
+- Tasks complete: **6 / 6**
+- Blockers: none
+- Notes: `matcher.js` implemented and validated with emergency + disease scoring test cases.
 
 ### Tasks
 
-- [ ] **2.1** Create `src/engine/matcher.js`
-- [ ] **2.2** Implement `checkEmergency(symptoms[])` — returns `true` if any of the 5 emergency symptoms present
-- [ ] **2.3** Implement `scoreDisease(inputSymptoms, disease)` — weighted score × coverage ratio
-- [ ] **2.4** Implement `runMatcher(inputSymptoms)` — returns `{ emergency: bool, results: [] }` with top 3, each with `confidence` %
-- [ ] **2.5** Manually test in browser console with 3+ known inputs (fever+headache+cough → flu, chest-pain → emergency)
-- [ ] **2.6** Commit: `feat: symptom matching engine`
+- [x] **2.1** Create `src/engine/matcher.js`
+- [x] **2.2** Implement `checkEmergency(symptoms[])` — returns `true` if any of the 5 emergency symptoms present
+- [x] **2.3** Implement `scoreDisease(inputSymptoms, disease)` — weighted score × coverage ratio
+- [x] **2.4** Implement `runMatcher(inputSymptoms)` — returns `{ emergency: bool, results: [] }` with top 3, each with `confidence` %
+- [x] **2.5** Manually test in browser console with 3+ known inputs (fever+headache+cough → flu, chest-pain → emergency)
+- [x] **2.6** Commit: `feat: symptom matching engine`
 
 ### Engine Logic (reference)
 ```js
